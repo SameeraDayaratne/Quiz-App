@@ -5,7 +5,13 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        pupleOne: '#3e2a60',
+        pupleTwo: '#321061',
+        darkPurple: '#191321'
+      },
+    },
   },
   plugins: [],
 }
