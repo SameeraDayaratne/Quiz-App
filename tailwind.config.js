@@ -9,7 +9,8 @@ export default {
       colors: {
         pupleOne: '#3e2a60',
         pupleTwo: '#321061',
-        darkPurple: '#191321'
+        darkPurple: '#191321',
+        btnHover : '#9d5af5'
       },
     },
   },
