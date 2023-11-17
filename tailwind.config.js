@@ -10,7 +10,8 @@ export default {
         pupleOne: '#3e2a60',
         pupleTwo: '#321061',
         darkPurple: '#191321',
-        btnHover : '#9d5af5'
+        btnHover : '#9d5af5',
+        progressAnswered: '#f8e59c'
       },
     },
   },
