@@ -6,6 +6,8 @@ export const TurnContext = createContext({
     state:'notClicked',
     clickedAnswer:'',
     isAnswerCorrect:false,
+    totalScore:0,
+    noOfSkips:0,
     incrementTurn: ()=>{},
     checkAnswer: ()=>{},
     showAnswer:()=>{}
@@ -14,6 +16,7 @@ export const TurnContext = createContext({
 export default function TurnContextProvider({children}){
 
     let score = useRef(0);
+    let skips = useRef(0);
 
     const [turnState, setTurnState] = useState({
         turn:1,
@@ -22,16 +25,32 @@ export default function TurnContextProvider({children}){
         isAnswerCorrect:false
     });
 
-    function handleNextQuestion(){
-        setTurnState(prev => {
-            let newTurn = prev.turn+1;
-            return ({
-                ...prev,
-                turn:newTurn,
-                state:'notClicked'
-            
+    function handleNextQuestion(action){
+        if(action == 'clicked'){
+            setTurnState(prev => {
+                let newTurn = prev.turn+1;
+                return ({
+                    ...prev,
+                    turn:newTurn,
+                    state:'notClicked'
+                
+                });
             });
-        });
+        }
+        else if(action == 'skipped')
+        {
+            skips.current += 1;
+            setTurnState(prev => {
+                let newTurn = prev.turn+1;
+                return ({
+                    ...prev,
+                    turn:newTurn,
+                    state:'notClicked'
+                
+                });
+            });
+        }
+        
     }
 
     function handleButtonClick(answer){
@@ -74,11 +93,16 @@ export default function TurnContextProvider({children}){
         });
     }
 
+    console.log('right ' + score.current);
+    console.log('skiped' + skips.current);
+
     const ctxValue = {
         turn : turnState.turn,
         state:turnState.state,
         clickedAnswer:turnState.clickedAnswer,
         isAnswerCorrect:turnState.isAnswerCorrect,
+        totalScore:score.current,
+        noOfSkips:skips.current,
         incrementTurn:handleNextQuestion,
         checkAnswer:handleButtonClick,
         showAnswer:showAnswer

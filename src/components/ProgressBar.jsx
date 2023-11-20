@@ -30,7 +30,7 @@ function ProgressBar({className}) {
             setRemainingTime(QUESTION_TIME);
             const timerNotClicked = setTimeout(()=>{
                 
-                incrementTurn();
+                incrementTurn('skipped');
             },QUESTION_TIME);
 
             return () => clearTimeout(timerNotClicked);
@@ -51,7 +51,7 @@ function ProgressBar({className}) {
 
             const timerAnswer = setTimeout(()=>{
                 
-                incrementTurn();
+                incrementTurn('clicked');
             },ANSWER_TIME);     
 
             return () => clearTimeout(timerAnswer);
