@@ -4,8 +4,11 @@ import Questions from "../Questions.js";
 export const TurnContext = createContext({
     turn:1,
     state:'notClicked',
+    clickedAnswer:'',
+    isAnswerCorrect:false,
     incrementTurn: ()=>{},
-    checkAnswer: ()=>{}
+    checkAnswer: ()=>{},
+    showAnswer:()=>{}
 });
 
 export default function TurnContextProvider({children}){
@@ -14,7 +17,9 @@ export default function TurnContextProvider({children}){
 
     const [turnState, setTurnState] = useState({
         turn:1,
-        state:'notClicked'
+        state:'notClicked',
+        clickedAnswer: '',
+        isAnswerCorrect:false
     });
 
     function handleNextQuestion(){
@@ -38,7 +43,9 @@ export default function TurnContextProvider({children}){
             setTurnState(prevTurnState => {
                 return({
                     ...prevTurnState,
-                    state:'clicked'
+                    state:'clicked',
+                    clickedAnswer:answer,
+                    isAnswerCorrect:true
                 });
             })
         }
@@ -46,7 +53,9 @@ export default function TurnContextProvider({children}){
             setTurnState(prevTurnState => {
                 return({
                     ...prevTurnState,
-                    state:'clicked'
+                    state:'clicked',
+                    clickedAnswer:answer,
+                    isAnswerCorrect:false
                 });
             })
         }
@@ -54,11 +63,25 @@ export default function TurnContextProvider({children}){
         
     }
 
+    function showAnswer(){
+        setTurnState(prevTurnState => {
+            return(
+                {
+                    ...prevTurnState,
+                    state:'showAnswer'
+                }
+            )
+        });
+    }
+
     const ctxValue = {
         turn : turnState.turn,
         state:turnState.state,
+        clickedAnswer:turnState.clickedAnswer,
+        isAnswerCorrect:turnState.isAnswerCorrect,
         incrementTurn:handleNextQuestion,
-        checkAnswer:handleButtonClick
+        checkAnswer:handleButtonClick,
+        showAnswer:showAnswer
     }
 
     console.log('new T' + turnState.turn);

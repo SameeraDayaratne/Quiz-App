@@ -3,10 +3,11 @@ import { TurnContext } from '../Store/Turn-Context';
 
 const QUESTION_TIME = 5000;
 const CLICKED_TIME = 1000;
+const ANSWER_TIME = 2000;
 
 function ProgressBar({className}) {
 
-    const {turn,state,incrementTurn} = useContext(TurnContext);
+    const {turn,state,incrementTurn,showAnswer} = useContext(TurnContext);
 
     const [remainingTime, setRemainingTime] = useState(QUESTION_TIME);
 
@@ -39,10 +40,21 @@ function ProgressBar({className}) {
             setRemainingTime(CLICKED_TIME);
             const timerClicked = setTimeout(()=>{
                 
-                incrementTurn();
+                showAnswer();
             },CLICKED_TIME);     
 
             return () => clearTimeout(timerClicked);
+        }
+        else if(state == 'showAnswer')
+        {
+            setRemainingTime(ANSWER_TIME);
+
+            const timerAnswer = setTimeout(()=>{
+                
+                incrementTurn();
+            },ANSWER_TIME);     
+
+            return () => clearTimeout(timerAnswer);
         }
         
 
@@ -60,7 +72,7 @@ function ProgressBar({className}) {
 
     return (
 
-            <progress className={classes} value={remainingTime} max={state=='notClicked'?QUESTION_TIME:CLICKED_TIME}></progress>
+            <progress className={classes} value={remainingTime} max={state=='notClicked'?QUESTION_TIME:state == 'clicked' ? CLICKED_TIME : ANSWER_TIME}></progress>
        
     );
 }
